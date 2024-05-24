@@ -1,17 +1,19 @@
-FROM golang:alpine as builder
+# Use the official Node.js 14 image.
+# https://hub.docker.com/_/node
+FROM node:14
 
-ENV GO111MODULE=on \
-    CGO_ENABLED=0 \
-    GOOS=linux \
-    GOARCH=amd64
+# Create and change to the app directory.
+WORKDIR /usr/src/app
 
-WORKDIR /builder
+# Copy application dependency manifests to the container image.
+# A wildcard is used to ensure both package.json AND yarn.lock are copied.
+COPY package.json yarn.lock ./
+
+# Install production dependencies.
+RUN yarn install --production
+
+# Copy local code to the container image.
 COPY . .
-RUN go mod download
-RUN go build -o app main.go
 
-FROM scratch
-
-COPY --from=builder /builder/app .
-ENTRYPOINT [ "./app" ]
-EXPOSE 3000
+# Run the web service on container startup.
+CMD [ "node", "index.js" ]
