@@ -1,7 +1,12 @@
 name: gitops-CI
 
-on: 
-  workflow_dispatch:
+on:
+  push:
+    branches:
+      - master
+      - dev
+      - staging
+      # Add other branches as needed
 
 jobs:
   build:
