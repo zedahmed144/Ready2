@@ -22,11 +22,15 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build and push Docker image
+        id: docker_build
         uses: docker/build-push-action@v2
         with: 
           context: ./app
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/argo-app:latest,${{ secrets.DOCKER_USERNAME }}/argo-app:${{ github.sha }}
+          tags: |
+            ${{ secrets.DOCKER_USERNAME }}/argo-app:${{ github.sha }}
+            ${{ secrets.DOCKER_USERNAME }}/argo-app:latest
+            ${{ secrets.DOCKER_USERNAME }}/argo-app:${{ github.ref_name }}
 
   deploy:
     name: Deploy
@@ -48,6 +52,7 @@ jobs:
         run: |
           cd infra
           kustomize edit set image argo-app=$DOCKER_USERNAME/argo-app:${{ github.sha }}
+          kustomize edit set image argo-app=$DOCKER_USERNAME/argo-app:${{ github.ref_name }}
           cat kustomization.yml
 
       - name: Commit files
@@ -59,4 +64,4 @@ jobs:
       - name: Push changes
         uses: ad-m/github-push-action@v0.6.0
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.GIT_HUB_TOKEN }}
