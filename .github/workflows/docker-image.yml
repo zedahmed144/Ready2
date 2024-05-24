@@ -49,11 +49,10 @@ jobs:
       - name: Update Kubernetes resources
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          BRANCH_NAME: ${{ github.ref_name }}
         run: |
           cd infra
           kustomize edit set image argo-app=$DOCKER_USERNAME/argo-app:${{ github.sha }}
-          kustomize edit set image argo-app=$DOCKER_USERNAME/argo-app:${{ BRANCH_NAME }}
+          kustomize edit set image argo-app=$DOCKER_USERNAME/argo-app:${{ github.ref_name }}
           cat kustomization.yml
 
       - name: Commit files
