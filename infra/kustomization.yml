@@ -7,4 +7,4 @@ namespace: argo-app
 images:
 - name: argo-app
   newName: zedahmed144/argo-app
-  newTag: 315df1d4d1bf4ca20d98ee1747220daf3114bd88
+  newTag: master
