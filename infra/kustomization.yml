@@ -6,5 +6,5 @@ resources:
 namespace: argo-app
 images:
 - name: argo-app
-  newName: akshit8/argo-app
-  newTag: 9f0d1624c21656b4bbf2ae9bf8597c0d009a06b8
+  newName: zedahmed144/argo-app
+  newTag: 315df1d4d1bf4ca20d98ee1747220daf3114bd88
