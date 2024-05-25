@@ -7,7 +7,7 @@ on:
       - dev
       - qa
       - staging
-      # Add other branches as needed1
+      # Add other branches as needed
 
 jobs:
   build:
@@ -47,6 +47,10 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v2
 
+      - name: Pull latest changes
+        run: |
+          git pull origin ${{ github.ref_name }}
+
       - name: Setup Kustomize
         uses: imranismail/setup-kustomize@v1
         with:
@@ -72,3 +76,4 @@ jobs:
         uses: ad-m/github-push-action@v0.6.0
         with:
           github_token: ${{ secrets.GIT_HUB_TOKEN }}
+          branch: ${{ github.ref_name }}
