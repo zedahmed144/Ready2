@@ -3,6 +3,7 @@ kind: Kustomization
 resources:
 - deployment.yml
 - service.yml
+- ingress.yml
 namespace: qa-namespace
 images:
 - name: argo-app

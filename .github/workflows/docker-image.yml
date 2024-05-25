@@ -64,6 +64,8 @@ jobs:
           cd infra/${{ github.ref_name }}
           kustomize edit set image argo-app=$DOCKER_USERNAME/argo-app:${{ github.sha }}
           kustomize edit set image argo-app=$DOCKER_USERNAME/argo-app:${{ github.ref_name }}
+          date >> log.txt
+          echo "Deployment for $BRANCH_NAME on $(date)" >> log.txt
           cat kustomization.yml
 
       - name: Commit files
