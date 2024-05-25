@@ -2,13 +2,13 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: argo-app
-  name: argo-app
+    app: ready-api-dev
+  name: ready-api-dev
 spec:
   ports:
     - name: http
       port: 3000
       targetPort: 3000
   selector:
-    app: argo-app
+    app: ready-api-dev
   type: NodePort
