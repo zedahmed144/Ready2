@@ -3,6 +3,7 @@ kind: Kustomization
 resources:
 - deployment.yml
 - service.yml
+- ingress.yml
 namespace: prod-namespace
 images:
 - name: ready-api-prd
