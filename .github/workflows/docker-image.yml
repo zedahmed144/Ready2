@@ -5,6 +5,7 @@ on:
     branches:
       - master
       - dev
+      - qa
       - staging
       # Add other branches as needed
 
@@ -54,8 +55,9 @@ jobs:
       - name: Update Kubernetes resources
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          BRANCH_NAME: ${{ github.ref_name }}
         run: |
-          cd infra
+          cd infra/${{ github.ref_name }}
           kustomize edit set image argo-app=$DOCKER_USERNAME/argo-app:${{ github.sha }}
           kustomize edit set image argo-app=$DOCKER_USERNAME/argo-app:${{ github.ref_name }}
           cat kustomization.yml
