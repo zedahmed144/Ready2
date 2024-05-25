@@ -5,6 +5,6 @@ resources:
 - service.yml
 namespace: qa-namespace
 images:
-- name: argo-app
+- name: ready-api-qa
   newName: zedahmed144/argo-app
-  newTag: master
+  newTag: qa
