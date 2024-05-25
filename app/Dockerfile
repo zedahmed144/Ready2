@@ -1,4 +1,4 @@
-# Use the official Node.js 14 image.
+# Use the official Node.js 14 image
 # https://hub.docker.com/_/node
 FROM node:14
 
