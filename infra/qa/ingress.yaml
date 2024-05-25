@@ -1,19 +1,19 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: api-ingress-dev
-  namespace: dev-namespace
+  name: api-ingress-qa
+  namespace: qa-namespace
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-  - host: ready-api-dev.vervenet.net
+  - host: ready-api-qa.vervenet.net
     http:
       paths:
       - path: /
         pathType: Prefix
         backend:
           service:
-            name: ready-api-dev
+            name: ready-api-qa
             port:
               number: 3000
