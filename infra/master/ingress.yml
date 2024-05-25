@@ -16,4 +16,4 @@ spec:
           service:
             name: ready-api-prd
             port:
-              number: 3000
+              number: 80

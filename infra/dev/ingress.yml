@@ -15,4 +15,4 @@ spec:
           service:
             name: ready-api-dev
             port:
-              number: 3000
+              number: 80
