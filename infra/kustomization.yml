@@ -7,4 +7,4 @@ namespace: argo-app
 images:
 - name: argo-app
   newName: zedahmed144/argo-app
-  newTag: master
+  newTag: dev
