@@ -2,20 +2,20 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: argo-app
-  name: argo-app
+    app: ready-api-prd
+  name: ready-api-prd
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: argo-app
+      app: ready-api-prd
   template:
     metadata:
       labels:
-        app: argo-app
+        app: ready-api-prd
     spec:
       containers:
-        - image: argo-app
-          name: argo-app
+        - image: ready-api-prd
+          name: ready-api-prd
           ports:
             - containerPort: 3000
