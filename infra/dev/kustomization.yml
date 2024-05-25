@@ -5,6 +5,9 @@ resources:
 - service.yml
 namespace: dev-namespace
 images:
+- name: argo-app
+  newName: zedahmed144/argo-app
+  newTag: dev
 - name: ready-api-dev
   newName: zedahmed144/argo-app
   newTag: dev
