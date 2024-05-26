@@ -9,4 +9,4 @@ namespace: qa-namespace
 images:
 - name: ready-api
   newName: zedahmed144/ready-api
-  newTag: qa
+  newTag: qa-$(date +'%m-%d-%Y')
