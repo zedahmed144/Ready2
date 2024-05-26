@@ -5,7 +5,7 @@ resources:
 - service.yml
 - ingress.yml
 - hpa.yml
-namespace: prod-namespace
+namespace: prd-namespace
 images:
 - name: ready-api
   newName: zedahmed144/ready-api
