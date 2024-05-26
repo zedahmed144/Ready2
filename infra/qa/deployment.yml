@@ -19,3 +19,28 @@ spec:
           name: ready-api
           ports:
             - containerPort: 80
+          resources:
+            requests:
+              memory: "124Mi"
+              cpu: "100m"
+            limits:
+              memory: "256Mi"
+              cpu: "500m"
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+              httpHeaders:
+                - name: Host
+                  value: ready-api-qa.vervenet.net
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+              httpHeaders:
+                - name: Host
+                  value: ready-api-qa.vervenet.net
+            initialDelaySeconds: 5
+            periodSeconds: 10

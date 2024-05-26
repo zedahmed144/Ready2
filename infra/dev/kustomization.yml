@@ -4,6 +4,7 @@ resources:
 - deployment.yml
 - service.yml
 - ingress.yml
+- hpa.yml
 namespace: dev-namespace
 images:
 - name: ready-api
