@@ -6,6 +6,6 @@ resources:
 - ingress.yml
 namespace: prod-namespace
 images:
-- name: ready-api-prd
-  newName: zedahmed144/argo-app
+- name: ready-api
+  newName: zedahmed144/ready-api
   newTag: 315df1d4d1bf4ca20d98ee1747220daf3114bd88
