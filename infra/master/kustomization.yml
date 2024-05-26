@@ -5,8 +5,8 @@ resources:
 - service.yml
 - ingress.yml
 - hpa.yml
-namespace: prd-namespace
+namespace: prod-namespace
 images:
 - name: ready-api
   newName: zedahmed144/ready-api
-  newTag: master-$(date +'%m-%d-%Y')
+  newTag: 315df1d4d1bf4ca20d98ee1747220daf3114bd88
