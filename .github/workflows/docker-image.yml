@@ -40,7 +40,7 @@ jobs:
           context: ./app
           push: true
           tags: |
-            ${{ secrets.DOCKER_USERNAME }}/ready-api:${{ env.BRANCH_NAME }}:latest
+            ${{ secrets.DOCKER_USERNAME }}/ready-api:latest
             ${{ secrets.DOCKER_USERNAME }}/ready-api:${{ env.BRANCH_NAME }}-${{ env.DATE_TAG }}
             ${{ secrets.DOCKER_USERNAME }}/ready-api:${{ env.SHORT_SHA }}
 
