@@ -15,7 +15,7 @@ spec:
         app: ready-api-qa
     spec:
       containers:
-        - image: ready-api-qa
-          name: ready-api-qa
+        - image: ready-api
+          name: ready-api
           ports:
             - containerPort: 80

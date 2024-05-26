@@ -15,7 +15,7 @@ spec:
         app: ready-api-prd
     spec:
       containers:
-        - image: ready-api-prd
-          name: ready-api-prd
+        - image: ready-api
+          name: ready-api
           ports:
             - containerPort: 80

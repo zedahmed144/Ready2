@@ -34,9 +34,9 @@ jobs:
           context: ./app
           push: true
           tags: |
-            ${{ secrets.DOCKER_USERNAME }}/argo-app:${{ github.sha }}
-            ${{ secrets.DOCKER_USERNAME }}/argo-app:latest
-            ${{ secrets.DOCKER_USERNAME }}/argo-app:${{ github.ref_name }}
+            ${{ secrets.DOCKER_USERNAME }}/ready-api:${{ github.sha }}
+            ${{ secrets.DOCKER_USERNAME }}/ready-api:latest
+            ${{ secrets.DOCKER_USERNAME }}/ready-api:${{ github.ref_name }}
 
   deploy:
     name: Deploy
@@ -62,8 +62,8 @@ jobs:
           BRANCH_NAME: ${{ github.ref_name }}
         run: |
           cd infra/${{ github.ref_name }}
-          kustomize edit set image argo-app=$DOCKER_USERNAME/argo-app:${{ github.sha }}
-          kustomize edit set image argo-app=$DOCKER_USERNAME/argo-app:${{ github.ref_name }}
+          kustomize edit set image ready-api=$DOCKER_USERNAME/ready-api:${{ github.sha }}
+          kustomize edit set image ready-api=$DOCKER_USERNAME/ready-api:${{ github.ref_name }}
           date >> log.txt
           echo "Deployment for $BRANCH_NAME on $(date)" >> log.txt
           cat kustomization.yml
