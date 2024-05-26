@@ -40,9 +40,9 @@ jobs:
           context: ./app
           push: true
           tags: |
-            ${{ secrets.DOCKER_USERNAME }}/ready-api:${{ env.BRANCH_NAME }}:latest
+            ${{ secrets.DOCKER_USERNAME }}/ready-api:${{ env.BRANCH_NAME }}-${{ env.SHORT_SHA }}
             ${{ secrets.DOCKER_USERNAME }}/ready-api:${{ env.DATE_TAG }}-${{ env.BRANCH_NAME }}
-            ${{ secrets.DOCKER_USERNAME }}/ready-api:${{ env.SHORT_SHA }}
+            ${{ secrets.DOCKER_USERNAME }}/ready-api:latest
 
   deploy:
     name: Deploy
