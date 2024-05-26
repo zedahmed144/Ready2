@@ -6,9 +6,6 @@ resources:
 - ingress.yml
 namespace: qa-namespace
 images:
-- name: argo-app
-  newName: zedahmed144/argo-app
-  newTag: qa
-- name: ready-api-qa
-  newName: zedahmed144/argo-app
+- name: ready-api
+  newName: zedahmed144/ready-api
   newTag: qa
