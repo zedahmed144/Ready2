@@ -31,7 +31,7 @@ jobs:
         run: |
           echo "BRANCH_NAME=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
           echo "SHORT_SHA=$(echo $GITHUB_SHA | cut -c1-7)" >> $GITHUB_ENV
-          echo "DATE_TAG=$(date +'%m-%d-%Y')" >> $GITHUB_ENV
+          echo "DATE_TAG=$(date +'%Y-%m-%d')" >> $GITHUB_ENV  # Change date format to avoid invalid characters
 
       - name: Build and push Docker image
         id: docker_build
@@ -66,6 +66,7 @@ jobs:
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           BRANCH_NAME: ${{ github.ref_name }}
+          SHORT_SHA: ${{ env.SHORT_SHA }}  # Ensure SHORT_SHA is available in this step
         run: |
           cd infra/${{ github.ref_name }}
           kustomize edit set image ready-api=$DOCKER_USERNAME/ready-api:${{ github.ref_name }}-${{ env.SHORT_SHA }}
