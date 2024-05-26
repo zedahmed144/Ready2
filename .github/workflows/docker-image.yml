@@ -27,6 +27,12 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
+      - name: Set environment variables
+        run: |
+          echo "BRANCH_NAME=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
+          echo "SHORT_SHA=$(echo $GITHUB_SHA | cut -c1-7)" >> $GITHUB_ENV
+          echo "DATE_TAG=$(date +'%m-%d-%Y')" >> $GITHUB_ENV
+
       - name: Build and push Docker image
         id: docker_build
         uses: docker/build-push-action@v2
@@ -34,9 +40,9 @@ jobs:
           context: ./app
           push: true
           tags: |
-            ${{ secrets.DOCKER_USERNAME }}/ready-api:${{ github.sha }}
-            ${{ secrets.DOCKER_USERNAME }}/ready-api:latest
-            ${{ secrets.DOCKER_USERNAME }}/ready-api:${{ github.ref_name }}
+            ${{ secrets.DOCKER_USERNAME }}/ready-api:${{ env.BRANCH_NAME }}:latest
+            ${{ secrets.DOCKER_USERNAME }}/ready-api:${{ env.DATE_TAG }}-${{ env.BRANCH_NAME }}
+            ${{ secrets.DOCKER_USERNAME }}/ready-api:${{ env.SHORT_SHA }}
 
   deploy:
     name: Deploy
