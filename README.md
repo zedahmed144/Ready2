@@ -18,9 +18,9 @@ This project uses the following tools:
   - [GithubActions](#GithubActions)
   - [Terraform](#Terraform)
 - [Configurations](#Configurations)
-  - [Step 1: Deploying an AWS cluster (HPA enabled) with Prometheus & Grafana for monitoring](#Step-1:-Deploying-an-AWS-cluster-(HPA-enabled)-with-Prometheus-&-Grafana-for-monitoring)
-  - [Step 2: Structuring the Repo and CI/CD Pipelines](#Step-2:-Structuring-the-Repo-and-CI/CD-Pipelines)
-  - [Step 3: Testing the application](#Step-3:-Testing-the-application)
+  - [Step 1: Deploying an AWS cluster (HPA enabled) with Prometheus & Grafana for monitoring](#Step-1-Deploying-an-AWS-cluster-(HPA-enabled)-with-Prometheus-&-Grafana-for-monitoring)
+  - [Step 2: Structuring the Repo and CI/CD Pipelines](#Step-2-Structuring-the-Repo-and-CI/CD-Pipelines)
+  - [Step 3: Testing the application](#Step-3-Testing-the-application)
 
 
 
