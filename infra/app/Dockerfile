@@ -12,8 +12,6 @@ COPY package.json yarn.lock ./
 # Install production dependencies.
 RUN yarn install --production
 
-# Copy local code to the container image.
 COPY . .
 
-# Run the web service on container startup.
 CMD [ "node", "index.js" ]
