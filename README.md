@@ -22,6 +22,8 @@ This project uses the following tools:
   - [Step 3: Testing the application](#Step-3:-Testing-the-application)
 
 
+
+
 ## Introduction
 
 
@@ -66,6 +68,9 @@ GitOps flow:
 
 <img src="assets/flowchart.png">
 
+
+
+
 A CICD pipeline is setup to continiously integrate and deploy changes made to the code. A push to the GitHub repo will trigger GithubActions to build a new Docker image and re-commit the change, change the repo code to incorporate the new image. ArgoCD, pointed to the Repo, will notice the changes and re-deploy the application.
 
 
@@ -84,6 +89,9 @@ GitOps is especially suited to deploy cloud-native applications on Kubernetes fo
 - **ArgoCD** - it lives inside our cluster and is responsible for deploying changes commited to repo.
 - **Github Actions** - it is responsible for building & pushing image to docker hub, and commit the latest image tag back to infra repo.
 - **Kustomize** - it describes our application infrastructure and specification.
+
+
+
 
 ## Configurations
 
@@ -104,6 +112,8 @@ This Solutions supports Remote Write for Prometheus. This is particulary useful 
 	- **AWS EBS Driver controller** - Manages the dynamic provisioning, attachment, and lifecycle of EBS volumes for Kubernetes pods, ensuring persistent storage.
 	- **Nginx Ingress** - Manages and routes external HTTP(S) traffic to services within the Kubernetes cluster, providing load balancing and SSL termination.
  	- **AWS Managed CNI** - Oversees networking for Kubernetes pods, ensuring efficient and secure communication within the cluster.
+
+
 
 
 ### Step 2: Structuring the Repo and CI/CD Pipelines
@@ -130,10 +140,16 @@ CMD [ "node", "index.js" ]
 
 The pipelines Depend on whether we have a multi-repo pipeline, monorepo and the structure of modules/resources. For simplicity, i Opted for A monorepo-multi-environment structure as shown below:
 
-<img src="assets/repo2.png">
+<img src="assets/repo2.png" width="600" height="1000">
+
+
+
 Our Github Actions **CI pipeline** has two jobs:
 - One for building, tagging and pushing the container to Dockerhub.
 - The second one will edit the `Kustomize` patch to bump the expected container tag to the new Docker image and then commit these changes.
+
+
+
 
 ```yml
 name: gitops-CI
@@ -223,10 +239,21 @@ jobs:
           branch: ${{ github.ref_name }}
 ```
 
+
+
+
 `GIT_HUB_TOKEN`, `DOCKER_USERNAME` and `DOCKER_PASSWORD` are secret that need to be configured. A commit to Github and trigger the above actions. Once passes, The image will be pushed to DockerHub with the specified tags.
 Other steps need to be done from the ArgoCD UI to point the project to the appropriate folders in Github (Can also be configured as `yaml` files).
 
+
+
+
+
 <img src="assets/argo2.png">
+
+
+
+
 
 
 
@@ -245,8 +272,16 @@ stress-ng --cpu 4 --vm 2 --vm-bytes 256M --timeout 60s //stressing CPU and memor
 htop // optional to monitor the load
 ```
 
+
+
+
+
 While running this test, we notice the HPA increasing the number of pods. HPA configs can also be checked by running the command:
 `kubectl get hpa -n dev-namespace`
+
+
+
+
 
 <img src="assets/hpa.png">
 
@@ -255,6 +290,8 @@ While running this test, we notice the HPA increasing the number of pods. HPA co
 
 
 Grafana dashboards provide comprehensive insights into our API, offering detailed metrics and visualizations that help us monitor performance and health. By continuously tracking various aspects of the API, Grafana can identify trends and patterns that indicate potential issues. Additionally, it is equipped with advanced alerting capabilities, enabling it to send timely notifications whenever anomalies or deviations from expected behavior are detected. This proactive approach ensures that we can address problems promptly, maintaining the reliability and efficiency of our API services. 
+
+
 
 
 
