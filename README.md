@@ -64,14 +64,12 @@ Terraform is an infrastructure as code tool that lets you define both cloud and 
 ## Functionality
 
 GitOps flow:
-<br><br>
-<br><br>
+
 
 <img src="assets/flowchart.png">
 
 <br><br>
-<br><br>
-<br><br>
+
 
 
 A CICD pipeline is setup to continiously integrate and deploy changes made to the code. A push to the GitHub repo will trigger GithubActions to build a new Docker image and re-commit the change, change the repo code to incorporate the new image. ArgoCD, pointed to the Repo, will notice the changes and re-deploy the application.
@@ -81,16 +79,12 @@ A CICD pipeline is setup to continiously integrate and deploy changes made to th
 For deploying cloud-native applications safely and efficiently on Kubernetes, we need something different from traditional **CI/CD pipelines**. It should follow the same declarative way used by `k8s` to manage applications:
 - Injecting Kubernetes objects through a declarative document as YAML or JSON.
 - Kubernetes Operators processing endlessly, evaluating the difference between the submitted objects and their real state in the cluster.
-<br><br>
-<br><br>
+
 ### Why GitOps?
 GitOps is especially suited to deploy cloud-native applications on Kubernetes following the above methodology while retaining it's underlying philosophy:
 - Use Git repo as single source of truth
 - changes are triggered with a Git commit
 - When the state of repo changes, same changes are enforced inside the cluster.
-<br><br>
-<br><br>
-<br><br>
 
 **Tools**<br>
 - **ArgoCD** - it lives inside our cluster and is responsible for deploying changes commited to repo.
@@ -98,24 +92,17 @@ GitOps is especially suited to deploy cloud-native applications on Kubernetes fo
 - **Kustomize** - it describes our application infrastructure and specification.
 
 
-<br><br>
-<br><br>
-<br><br>
+
 
 ## Configurations
 
-<br><br>
-<br><br>
-<br><br>
-<br><br>
+
 ### Step 1: Deploying an AWS cluster (HPA enabled) with Prometheus & Grafana for monitoring 
-<br><br>
-<br><br>
+
 The repo contains the full code for an AWS cluster that we can leverage as an Orchestration tool. This cluster is highly available and spans multiple AZs.
 Prometheus and Grafana have also been terraformed. I made use of the AWS `AWS Managed Prometheus` and `AWS Managed Grafana`, while using the `Prometheus-kube-state-metrics` Helm chart to deploy the scrapers. 
 This Solutions supports Remote Write for Prometheus. This is particulary useful if you want to connect many EKS cluster to only 1 prometheus server and 1 Grafana UI.
-<br><br>
-<br><br>
+
 **Cluster Add-ons**<br>
 	- **Prometheus** - Monitors and collects metrics from various systems, providing storage and alerting capabilities for effective system observability.
 	- **Grafana** - Visualizes collected data through interactive dashboards, enabling detailed insights and analysis of metrics for better decision-making.
@@ -128,13 +115,9 @@ This Solutions supports Remote Write for Prometheus. This is particulary useful 
  	- **AWS Managed CNI** - Oversees networking for Kubernetes pods, ensuring efficient and secure communication within the cluster.
 
 
-<br><br>
-<br><br>
-<br><br>
-<br><br>
+
 
 ### Step 2: Structuring the Repo and CI/CD Pipelines
-<br><br>
 As any Continerized application, a Dockerfile needs to be created at first. Below is a simple Dockerfile to test functionality:
 ```yml
 # Use the official Node.js 14 image.
@@ -155,24 +138,18 @@ COPY . .
 
 CMD [ "node", "index.js" ]
 ```
-<br><br>
-<br><br>
 
 The pipelines Depend on whether we have a multi-repo pipeline, monorepo and the structure of modules/resources. For simplicity, i Opted for A monorepo-multi-environment structure as shown below:
 
 <img src="assets/repo2.png" width="300" height="600">
 
 <br><br>
-<br><br>
-<br><br>
-
 
 Our Github Actions **CI pipeline** has two jobs:
 - One for building, tagging and pushing the container to Dockerhub.
 - The second one will edit the `Kustomize` patch to bump the expected container tag to the new Docker image and then commit these changes.
 
-<br><br>
-<br><br>
+
 
 
 ```yml
@@ -263,8 +240,7 @@ jobs:
           branch: ${{ github.ref_name }}
 ```
 
-<br><br>
-<br><br>
+
 
 
 `GIT_HUB_TOKEN`, `DOCKER_USERNAME` and `DOCKER_PASSWORD` are secret that need to be configured. A commit to Github and trigger the above actions. Once passes, The image will be pushed to DockerHub with the specified tags.
@@ -281,10 +257,6 @@ Other steps need to be done from the ArgoCD UI to point the project to the appro
 
 <img src="assets/argo2.png">
 
-
-<br><br>
-<br><br>
-<br><br>
 <br><br>
 
 
@@ -305,21 +277,20 @@ apt-get install -y stress-ng
 stress-ng --cpu 4 --vm 2 --vm-bytes 256M --timeout 60s //stressing CPU and memory
 htop // optional to monitor the load
 ```
-<br><br>
-<br><br>
-<br><br>
-<br><br>
+
+
+
+
 
 While running this test, we notice the HPA increasing the number of pods. HPA configs can also be checked by running the command:
 `kubectl get hpa -n dev-namespace`
 
-<br><br>
-<br><br>
+
+
+
 
 <img src="assets/hpa.png">
 
-<br><br>
-<br><br>
 <br><br>
 
 
@@ -332,13 +303,10 @@ Grafana dashboards provide comprehensive insights into our API, offering detaile
 
 <img src="assets/grafana.png">
 
+<br><br>
 
 
-<br><br>
-<br><br>
-<br><br>
-<br><br>
 
 
 ## Author
-**Aziz Bel <zedahmed144@gmail.com>**
+**Aziz <zedahmed144@gmail.com>**
