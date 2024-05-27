@@ -28,8 +28,8 @@ This project uses the following tools:
 - Dev-API: `ready-api-dev.vervenet.net`
 - QA-API: `ready-api-qa.vervenet.net`
 - PROD-API: `ready-prd-dev.vervenet.net`
-- Grafana UI: `grafana.vervenet.net`
-- ArgoCD UI: `argo.vervenet.net`
+- Grafana UI: `grafana.vervenet.net` (Username: `admin` || Password `adminadmin`)
+- ArgoCD UI: `argo.vervenet.net` (Username: `admin` || Password `adminadmin`)
 
 ## Introduction
 
