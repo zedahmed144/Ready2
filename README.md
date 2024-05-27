@@ -149,7 +149,9 @@ CMD [ "node", "index.js" ]
 
 The pipelines Depend on whether we have a multi-repo pipeline, monorepo and the structure of modules/resources. For simplicity, i Opted for A monorepo-multi-environment structure as shown below:
 
-<img src="assets/repo2.png" width="400" height="600">
+<div align="center">
+  <img src="assets/repo2.png" width="400" height="600">
+</div>
 
 <br><br>
 
