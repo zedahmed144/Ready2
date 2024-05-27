@@ -68,8 +68,7 @@ jobs:
           BRANCH_NAME: ${{ github.ref_name }}
         run: |
           cd infra/${{ github.ref_name }}
-          kustomize edit set image ready-api=$DOCKER_USERNAME/ready-api:${{ github.sha }}
-          kustomize edit set image ready-api=$DOCKER_USERNAME/ready-api:${{ github.ref_name }}
+          kustomize edit set image ready-api=${{ secrets.DOCKER_USERNAME }}/ready-api:${{ github.ref_name }}
           date >> log.txt
           echo "Deployment for $BRANCH_NAME on $(date)" >> log.txt
           cat kustomization.yml
@@ -78,7 +77,7 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git commit -am "rolling image to tag ${{ github.sha }}"
+          git commit -m "rolling image to tag ${{ github.sha }}"
 
       - name: Push changes
         uses: ad-m/github-push-action@v0.6.0
