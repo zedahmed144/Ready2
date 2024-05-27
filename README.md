@@ -25,11 +25,11 @@ This project uses the following tools:
 
 
 ## Useful Links
-- [Dev-API](ready-api-dev.vervenet.net)
-- [QA-API](ready-api-qa.vervenet.net)
-- [PROD-API](ready-prd-dev.vervenet.net)
-- [Grafana UI](grafana.vervenet.net)
-- [ArgoCD UI](argo.vervenet.net)
+- Dev-API: `ready-api-dev.vervenet.net`
+- QA-API: `ready-api-qa.vervenet.net`
+- PROD-API: `ready-prd-dev.vervenet.net`
+- Grafana UI: `grafana.vervenet.net`
+- ArgoCD UI: `argo.vervenet.net`
 
 ## Introduction
 
