@@ -240,7 +240,7 @@ jobs:
           branch: ${{ github.ref_name }}
 ```
 
-
+<br><br>
 
 
 `GIT_HUB_TOKEN`, `DOCKER_USERNAME` and `DOCKER_PASSWORD` are secret that need to be configured. A commit to Github and trigger the above actions. Once passes, The image will be pushed to DockerHub with the specified tags.
