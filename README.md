@@ -1,143 +1,184 @@
-# Doing Kubernetes CI/CD right with ArgoCD, Kustomize and Github Actions
+# Ready Api design, CI/CD With ArgoCD, Github Actions on Kubernetes
 
 <img src="assets/banner.png">
 
-## Why we need CI/CD?
-**CI/CD** reduces the gap between your system infrastructure and your development process thus allowing new features to be tested, deployed and delivered much more quickly. CI/CD is a must because:
-- Manual deployments can be error prone
-- Allow graceful changes like `Blue-Green Deployments` and `Canary Testing`
+This project uses the following tools:
 
-## CI/CD and Kubernetes
+- [Kubernetes](#Kubernetes)
+- [ArgoCD](#ArgoCD)
+- [GithubActions](#GithubActions)
+- [Terraform](#Terraform)
+
+
+### Content
+- [Introduction](#Introduction)
+  - [Kubernetes](#Kubernetes)
+  - [ArgoCD](#ArgoCD)
+  - [GithubActions](#GithubActions)
+  - [Terraform](#Terraform)
+- [Configurations](#Configurations)
+  - [Step 1: Deploying an AWS cluster (HPA enabled) with Prometheus & Grafana for monitoring](#Step-1:-Deploying-an-AWS-cluster-(HPA-enabled)-with-Prometheus-&-Grafana-for-monitoring)
+  - [Step 2: Structuring the Repo and CI/CD Pipelines](#Step-2:-Structuring-the-Repo-and-CI/CD-Pipelines)
+  - [Step 3: Testing the application](#Step-3:-Testing-the-application)
+
+
+## Introduction
+
+
+The Ready API layer serves a web-based service that necessitates accessibility to the broader internet. The service, encapsulated within a Docker container must gracefully handle a minimum of 1000 concurrent users during launch, dynamically scale based on demand, maintain high availability amid server/network anomalies, and withstand deliberate DoS attacks. Additionally, it should accommodate periodic service updates with minimal downtime.
+This project aims at deploying the API layer containerzied on Kubernetes, all using terraform while supporting automated builds for future updates and bug fixes.
+
+
+
+
+### Kubernetes
+
+Kubernetes, also known as K8s, is an open-source system for automating deployment, scaling, and management of containerized applications.
+Kubernetes groups containers that make up an application into logical units for easy management and discovery. Kubernetes builds upon 15 years of experience of running production workloads at Google, combined with best-of-breed ideas and practices from the community.
+
+
+
+
+### ArgoCD
+
+ArgoCD is a declarative, GitOps continuous delivery tool for Kubernetes. It synchronizes application state stored in a Git repository with the desired state in a Kubernetes cluster. ArgoCD provides features like automated deployments, rollbacks, and health monitoring.
+
+
+
+### GithubActions
+
+GitHub Actions is a CI/CD platform that automates workflows directly within GitHub repositories. It enables users to build, test, and deploy code based on events such as pushes, pull requests, or schedule triggers. GitHub Actions supports custom scripts, containers, and third-party services for flexible automation. Though, in this project, we will use GithubActions for CI only, and rely on ArgoCD for the CD part.
+
+
+
+
+### Terraform
+
+Terraform is an infrastructure as code tool that lets you define both cloud and on-prem resources in human-readable configuration files that you can version, reuse, and share. You can then use a consistent workflow to provision and manage all of your infrastructure throughout its lifecycle. Terraform can manage low-level components like compute, storage, and networking resources, as well as high-level components like DNS entries and SaaS features.
+
+
+
+
+## Functionality
+
+GitOps flow:
+
+
+<img src="assets/flowchart.png">
+
+A CICD pipeline is setup to continiously integrate and deploy changes made to the code. A push to the GitHub repo will trigger GithubActions to build a new Docker image and re-commit the change, change the repo code to incorporate the new image. ArgoCD, pointed to the Repo, will notice the changes and re-deploy the application.
+
+
+### CI/CD and Kubernetes
 For deploying cloud-native applications safely and efficiently on Kubernetes, we need something different from traditional **CI/CD pipelines**. It should follow the same declarative way used by `k8s` to manage applications:
 - Injecting Kubernetes objects through a declarative document as YAML or JSON.
 - Kubernetes Operators processing endlessly, evaluating the difference between the submitted objects and their real state in the cluster.
 
-## Why GitOps?
+### Why GitOps?
 GitOps is especially suited to deploy cloud-native applications on Kubernetes following the above methodology while retaining it's underlying philosophy:
 - Use Git repo as single source of truth
 - changes are triggered with a Git commit
 - When the state of repo changes, same changes are enforced inside the cluster.
-
-## Our GitOps flow
-
-<img src="assets/flowchart.png">
 
 **Tools**<br>
 - **ArgoCD** - it lives inside our cluster and is responsible for deploying changes commited to repo.
 - **Github Actions** - it is responsible for building & pushing image to docker hub, and commit the latest image tag back to infra repo.
 - **Kustomize** - it describes our application infrastructure and specification.
 
-## Let's start with a single node k8s cluster
-I am using [microk8s](https://microk8s.io/) as it's lightweight and super easy to install.<br>
-[*download-docs*](https://microk8s.io/docs)
-```bash
-# install the binary with snap
-sudo snap install microk8s --classic --channel=1.19
+## Configurations
 
-# add your current user to the group and gain access to the .kube caching directory
-sudo usermod -a -G microk8s $USER
-sudo chown -f -R $USER ~/.kube
 
-# MicroK8s uses a namespaced kubectl command to prevent conflicts with any existing installs of kubectl
-# to use kubectl add alias to ~/.bash_aliases
-alias kubectl='microk8s kubectl'
+### Step 1: Deploying an AWS cluster (HPA enabled) with Prometheus & Grafana for monitoring 
 
-# MicroK8s uses the minimum of components for a pure, lightweight Kubernetes
-# it is recommended to add DNS management to facilitate communication between services
-microk8s enable dns
-```
-To verify your installation, run the following commands
+The repo contains the full code for an AWS cluster that we can leverage as an Orchestration tool. This cluster is highly available and spans multiple AZs.
+Prometheus and Grafana have also been terraformed. I made use of the AWS `AWS Managed Prometheus` and `AWS Managed Grafana`, while using the `Prometheus-kube-state-metrics` Helm chart to deploy the scrapers. 
+This Solutions supports Remote Write for Prometheus. This is particulary useful if you want to connect many EKS cluster to only 1 prometheus server and 1 Grafana UI.
 
-<img src="assets/cluster-check.png">
+**Cluster Add-ons**<br>
+	- **Prometheus** - Monitors and collects metrics from various systems, providing storage and alerting capabilities for effective system observability.
+	- **Grafana** - Visualizes collected data through interactive dashboards, enabling detailed insights and analysis of metrics for better decision-making.
+ 	- **AlerManager** - Manages and routes alerts generated by Prometheus, supporting deduplication, grouping, and sending notifications via various methods.
+  	- **Metrics-server** - Collects and aggregates resource usage data, such as CPU and memory, from Kubernetes nodes and pods, providing essential metrics for autoscaling and monitoring. 
+	- **Horizontal Pod Autoscaler** - Dynamically adjusts the number of application pods based on observed resource utilization, ensuring efficient resource management.
+ 	- **Cluster Autoscaler** - Automatically scales the number of nodes in the Kubernetes cluster in response to workload demands, optimizing resource allocation.
+	- **AWS EBS Driver controller** - Manages the dynamic provisioning, attachment, and lifecycle of EBS volumes for Kubernetes pods, ensuring persistent storage.
+	- **Nginx Ingress** - Manages and routes external HTTP(S) traffic to services within the Kubernetes cluster, providing load balancing and SSL termination.
+ 	- **AWS Managed CNI** - Oversees networking for Kubernetes pods, ensuring efficient and secure communication within the cluster.
 
-## Our application
-I'll be using a simple golang application with a `GET /health` route.
 
-```go
-package main
+### Step 2: Structuring the Repo and CI/CD Pipelines
+As any Continerized application, a Dockerfile needs to be created at first. Below is a simple Dockerfile to test functionality:
+```yml
+# Use the official Node.js 14 image.
+# https://hub.docker.com/_/node
+FROM node:14
 
-import (
-	"fmt"
-	"log"
-	"net/http"
-	"os"
+# Create and change to the app directory
+WORKDIR /usr/src/app
 
-	"github.com/gin-gonic/gin"
-)
+# Copy application dependency manifests to the container image.
+# A wildcard is used to ensure both package.json AND yarn.lock are copied.
+COPY package.json yarn.lock ./
 
-var port string
+# Install production dependencies.
+RUN yarn install --production
 
-func main() {
-	port = os.Getenv("PORT")
-	if port == "" {
-		port = "3000"
-	}
-
-	router := gin.Default()
-
-	router.GET("/health", health)
-
-	log.Fatal(router.Run(fmt.Sprintf("0.0.0.0:%s", port)))
-}
-
-func health(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
-		"success": "true",
-		"message": "api is working",
-	})
-}
-```
-
-The associated Dockerfile is quite simple, building the application then running it in a Linux container
-
-```Dockerfile
-FROM golang:alpine as builder
-
-ENV GO111MODULE=on \
-    CGO_ENABLED=0 \
-    GOOS=linux \
-    GOARCH=amd64
-
-WORKDIR /builder
 COPY . .
-RUN go mod download
-RUN go build -o app main.go
 
-FROM scratch
-
-COPY --from=builder /builder/app .
-ENTRYPOINT [ "./app" ]
-EXPOSE 3000
+CMD [ "node", "index.js" ]
 ```
 
-Our **CI pipeline** has two jobs:
-- One for running tests, building and pushing the container on Dockerhub(with `Github SHA` as image tag).
+The pipelines Depend on whether we have a multi-repo pipeline, monorepo and the structure of modules/resources. For simplicity, i Opted for A monorepo-multi-environment structure as shown below:
+
+<img src="assets/repo2.png">
+Our Github Actions **CI pipeline** has two jobs:
+- One for building, tagging and pushing the container to Dockerhub.
 - The second one will edit the `Kustomize` patch to bump the expected container tag to the new Docker image and then commit these changes.
 
 ```yml
 name: gitops-CI
 
-on: 
-  # workflow dispatch requires manual trigger
-  workflow_dispatch:
+on:
+  push:
+    branches:
+      - master // This is a protected branch that deploys to PROD
+      - dev
+      - qa
 
 jobs:
   build:
-    name: build
+    name: Build
     runs-on: ubuntu-latest
 
     steps:
-      - name: check out code
+      - name: Check out code
         uses: actions/checkout@v2
 
-      - name: build and push docker image
-        uses: docker/build-push-action@v1.1.0
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Set environment variables
+        run: |
+          echo "BRANCH_NAME=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
+          echo "SHORT_SHA=$(echo $GITHUB_SHA | cut -c1-7)" >> $GITHUB_ENV
+          echo "DATE_TAG=$(date +'%m-%d-%Y')" >> $GITHUB_ENV
+
+      - name: Build and push Docker image
+        id: docker_build
+        uses: docker/build-push-action@v2
         with: 
-          username: ${{ secrets.USERNAME }}
-          password: ${{ secrets.PASSWORD }}
-          repository: ${{ secrets.USERNAME }}/argo-app
-          tags: ${{ github.sha }}, latest
-          path: ./app
+          context: infra/app
+          push: true
+          tags: |
+            ${{ secrets.DOCKER_USERNAME }}/ready-api:${{ env.BRANCH_NAME }} 
+            ${{ secrets.DOCKER_USERNAME }}/ready-api:${{ env.BRANCH_NAME }}-${{ env.DATE_TAG }}
+            ${{ secrets.DOCKER_USERNAME }}/ready-api:${{ env.SHORT_SHA }}
 
   deploy:
     name: Deploy
@@ -145,142 +186,84 @@ jobs:
     needs: build
 
     steps:
-    - name: Check out code
-      uses: actions/checkout@v2
+      - name: Check out code
+        uses: actions/checkout@v2
 
-    - name: Setup Kustomize
-      uses: imranismail/setup-kustomize@v1
-      with:
-        kustomize-version: "3.6.1"
+      - name: Pull latest changes
+        run: |
+          git pull origin ${{ github.ref_name }}
 
-    - name: Update Kubernetes resources
-      env:
-        DOCKER_USERNAME: ${{ secrets.USERNAME }}
-      run: |
-        cd infra
-        kustomize edit set image argo-app=$DOCKER_USERNAME/argo-app:$GITHUB_SHA
-        cat kustomization.yml
-        
-    - name: Commit files
-      run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        git commit -am "rolling image to tag $GITHUB_SHA"
+      - name: Setup Kustomize
+        uses: imranismail/setup-kustomize@v1
+        with:
+          kustomize-version: "3.6.1"
 
-    - name: Push changes
-      uses: ad-m/github-push-action@master
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Update Kubernetes resources
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          BRANCH_NAME: ${{ github.ref_name }}
+        run: |
+          cd infra/${{ github.ref_name }}
+          kustomize edit set image ready-api=$DOCKER_USERNAME/ready-api:${{ github.sha }}
+          kustomize edit set image ready-api=$DOCKER_USERNAME/ready-api:${{ github.ref_name }}
+          date >> log.txt
+          echo "Deployment for $BRANCH_NAME on $(date)" >> log.txt
+          cat kustomization.yml
+
+      - name: Commit files
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git commit -am "rolling image to tag ${{ github.sha }}"
+
+      - name: Push changes
+        uses: ad-m/github-push-action@v0.6.0
+        with:
+          github_token: ${{ secrets.GIT_HUB_TOKEN }}
+          branch: ${{ github.ref_name }}
 ```
 
-Configure the repository secrets, commit your code to Github and trigger the above action. If your action passes, you'll have a image pushed to Docker hub(with GITHUB SHA as image tag) and commit to your repository by Github action like this
+`GIT_HUB_TOKEN`, `DOCKER_USERNAME` and `DOCKER_PASSWORD` are secret that need to be configured. A commit to Github and trigger the above actions. Once passes, The image will be pushed to DockerHub with the specified tags.
+Other steps need to be done from the ArgoCD UI to point the project to the appropriate folders in Github (Can also be configured as `yaml` files).
 
-<img src="assets/ga-commit.png">
+<img src="assets/argo2.png">
 
-## Let's deploy our app
-Before setting ArgoCD let us first deploy our app inside the cluster to make sure everything works.<br>
-Before proceeding do check the [infra](https://github.com/Akshit8/ci-cd-k8s/tree/master/infra) to make sure you have required set of `k8s components`.
-```bash
-# create a new namespace
-kubectl create ns argo-app
 
-# apply the changes
-kubectl -n argo-app kustomize ci-cd-k8s/infra/ | kubectl -n argo-app apply -f -
 
-# check all components are running
-kubectl get all -n argo-app
 
-# port forward to access health router
-kubectl port-forward --address 0.0.0.0 service/argo-app -n argo-app 3000:3000
+
+### Step 3: Testing the application
+
+Due to the anticipation of sporadic traffic pattern, I have enabled `Horizontal Pod Autoscaler` to adjust the number of pods based on traffic. I have also setup `readiness-probes`, `liveness-probes` and `Ingresses` to ensure healthy functionality of the service. Coupled with the `Cluster Autoscaler`, this should ensure the high-availability of the API.
+
+Below is a test that can be performed to test the HPA:
+```
+kubectl exec -it READY-API-CONTAINER-NAME -n dev-namespace sh // exec to one of the containers
+apt-get update //for debian based
+apt-get install -y stress-ng
+stress-ng --cpu 4 --vm 2 --vm-bytes 256M --timeout 60s //stressing CPU and memory
+htop // optional to monitor the load
 ```
 
-<img src="assets/app-deploy.png">
+While running this test, we notice the HPA increasing the number of pods. HPA configs can also be checked by running the command:
+`kubectl get hpa -n dev-namespace`
 
-After **port forwarding**, open `localhost:3000/health` to verify whether everything is working.
+<img src="assets/hpa.png">
 
-<img src="assets/original-deploy.png">
 
-## Setting up ArgoCD
-Check [argocd-getting-started](https://argoproj.github.io/argo-cd/getting_started/) here.<br><br>
-I have copied install.yaml from [here](https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml) and checked into git so that I am able to install same version of Argo in future, if required.
-```bash
-kubectl create ns argo
 
-kubectl -n argo apply -f ci-cd-k8s/argo/install.yml  
 
-kubectl port-forward --address 0.0.0.0 service/argocd-server -n argo 3001:443
-```
-To verify your installation run the following command. Make sure all the listed components are in **healthy** condition.
 
-<img src="assets/argo-ns-check.png">
+Grafana dashboards provide comprehensive insights into our API, offering detailed metrics and visualizations that help us monitor performance and health. By continuously tracking various aspects of the API, Grafana can identify trends and patterns that indicate potential issues. Additionally, it is equipped with advanced alerting capabilities, enabling it to send timely notifications whenever anomalies or deviations from expected behavior are detected. This proactive approach ensures that we can address problems promptly, maintaining the reliability and efficiency of our API services. 
 
-After **port forwarding**, open `localhost:3001` and login with `admin` as *username* and `argocd-server podname` as *password*.
 
-## Connecting Git repo with Argocd
-Once you are able to access the web ui, let's now connect our git repository to argo cd.<br><br>
-Generate a ssh key-pair using following command
-```bash
-ssh-keygen
-```
-Before making any change to Argo let's first add the public ssh key inside our Github repo. Open `repo-settings` > `deploy-key` and add the public key by clicking on **Add Deploy Key**
 
-<img src="assets/git-deploy-key.png">
+<img src="assets/grafana.png">
 
-Inside web ui navigate to `settings`>`repositories` and click on **CONNECT REPO USING SSH** option. Add the following details
-```
-name: argo-app
-repository: git@github.com:/Akshit8/ci-cd-k8s
-```
-After pasting your private ssh key, click on **connect**. If the connection is successful you'll see something similar to below
 
-<img src="assets/repo.png">
 
-## Creating CD pipeline on ArgoCD
-ArgoCD must be configured to observe our Git repository. This is done simply by creating an application, where we tell Argo how to deploy our application to cluster. On `Applications` page click on `New App` to start creating a new application. 
 
-<img src="assets/app-summary.png">
 
-**Note:** After adding `infra` as the path field, argo would automatically sense that we are using Kustomization(since our infra folder have a `kustomization.yml` file)
-
-## GitOps Magic
-Note that at the end of the GitHub Actions pipeline, we don’t run any imperative command to deploy our application, we just changed our container version using Kustomize and auto-pushed these changes into our repository.<br><br>
-If you do any code change, the pipeline is triggered and a new Docker image is pushed, the container version is updated and ArgoCD should catch the change.<br><br>
-Let us test our CI/CD pipeline by adding one more endpoint to our Go application, and run the Github action after commiting the code.
-
-```go
-router.GET("/argo", argo)
-
-func argo(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
-		"success": "true",
-		"message": "our CI/CD pipeline is working",
-	})
-}
-```
-
-Once the action is successfully done, the changes would be reflected on ArgoCD web ui
-
-<img src="assets/argo-sync.png">
-
-Note that ArgoCD is gracefully removing old container while simultaneously adding the new ones. After the new deploy is done open `localhost:3000/argo` (do make sure port-forwarding is applied) to check newly the newly added endpoint
-
-<img src="assets/result.png">
-
-## A final word
-- If you have made till here, congrats! as you now have a production-ready gitOps style cloud-native CI/CD pipeline at your disposal.
-- You may use this as a foundatinal template to build our own superb CI/CD pipelines.
-- The above pipeline is so modular that you easily swap any component from it and use something you like, for e.g argo can be replaced with flux, we can use helm instead of kustomize etc.
-- I personally used ArgoCD because it can connect to multiple repos and it comes with an awesome web ui. Also it'smart to enforce a change to cluster only if it's needed.
-- If you are using a public repo you can skip **Connecting Git repo with Argocd** part
-- If you need to pull image from a private registry you just need to [configure image pull secret for it](https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/)
 
 ## Author
 **Akshit Sadana <akshitsadana@gmail.com>**
-
-- Github: [@Akshit8](https://github.com/Akshit8)
-- LinkedIn: [@akshitsadana](https://www.linkedin.com/in/akshit-sadana-b051ab121/)
-
-## License
-Licensed under the MIT License
-
-
