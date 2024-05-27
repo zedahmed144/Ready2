@@ -140,7 +140,7 @@ CMD [ "node", "index.js" ]
 
 The pipelines Depend on whether we have a multi-repo pipeline, monorepo and the structure of modules/resources. For simplicity, i Opted for A monorepo-multi-environment structure as shown below:
 
-<img src="assets/repo2.png" width="600" height="1000">
+<img src="assets/repo2.png" width="300" height="600">
 
 
 
@@ -249,6 +249,11 @@ Other steps need to be done from the ArgoCD UI to point the project to the appro
 
 
 
+
+
+
+
+
 <img src="assets/argo2.png">
 
 
@@ -303,4 +308,4 @@ Grafana dashboards provide comprehensive insights into our API, offering detaile
 
 
 ## Author
-**Akshit Sadana <akshitsadana@gmail.com>**
+**Aziz Bel <zedahmed144@gmail.com>**
