@@ -145,10 +145,11 @@ COPY . .
 
 CMD [ "node", "index.js" ]
 ```
+<br><br>
 
 The pipelines Depend on whether we have a multi-repo pipeline, monorepo and the structure of modules/resources. For simplicity, i Opted for A monorepo-multi-environment structure as shown below:
 
-<img src="assets/repo2.png" width="300" height="600">
+<img src="assets/repo2.png" width="400" height="600">
 
 <br><br>
 
@@ -284,6 +285,7 @@ apt-get install -y stress-ng
 stress-ng --cpu 4 --vm 2 --vm-bytes 256M --timeout 60s //stressing CPU and memory
 htop // optional to monitor the load
 ```
+<br><br>
 
 
 
