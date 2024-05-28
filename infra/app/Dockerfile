@@ -1,17 +1,22 @@
-# Use the official Node.js 14 image.
-# https://hub.docker.com/_/node
-FROM node:14
+FROM node:20 as builder
 
-# Create and change to the app directory
 WORKDIR /usr/src/app
 
-# Copy application dependency manifests to the container image.
-# A wildcard is used to ensure both package.json AND yarn.lock are copied.
 COPY package.json yarn.lock ./
 
-# Install production dependencies.
-RUN yarn install --production
+RUN yarn install
 
 COPY . .
 
-CMD [ "node", "index.js" ]
+RUN yarn test
+
+# Build stage completed, moving to runtime image
+FROM node:20-slim
+
+WORKDIR /usr/src/app
+
+COPY --from=builder /usr/src/app .
+
+EXPOSE 80
+
+CMD ["node", "index.js"]
