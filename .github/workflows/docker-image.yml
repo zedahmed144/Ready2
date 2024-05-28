@@ -37,10 +37,11 @@ jobs:
         with: 
           context: infra/app
           push: true
+          path: ./infra/app
           tags: |
             ${{ secrets.DOCKER_USERNAME }}/ready-api:${{ env.BRANCH_NAME }}
             ${{ secrets.DOCKER_USERNAME }}/ready-api:${{ env.BRANCH_NAME }}-${{ env.DATE_TAG }}
-            ${{ secrets.DOCKER_USERNAME }}/ready-api:${{ env.SHORT_SHA }}
+            ${{ secrets.DOCKER_USERNAME }}/ready-api:${{ github.sha }}
 
   deploy:
     name: Deploy
@@ -67,8 +68,7 @@ jobs:
           SHORT_SHA: ${{ github.sha }}
         run: |
           cd infra/${{ github.ref_name }}
-          kustomize edit set image ready-api=${{ secrets.DOCKER_USERNAME }}/ready-api:${{ env.SHORT_SHA }}
-          kustomize edit set image ready-api=${{ secrets.DOCKER_USERNAME }}/ready-api:${{ env.BRANCH_NAME }}
+          kustomize edit set image ready-api=${{ secrets.DOCKER_USERNAME }}/ready-api:$GITHUB_SHA
           date >> log.txt
           echo "Deployment for $BRANCH_NAME on $(date)" >> log.txt
           cat kustomization.yml
@@ -78,8 +78,6 @@ jobs:
           cd infra/${{ github.ref_name }}
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add kustomization.yml
-          git add .
           git commit -m "rolling image to tag ${{ github.sha }}"
 
       - name: Push changes
