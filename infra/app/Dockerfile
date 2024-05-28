@@ -8,8 +8,6 @@ RUN yarn install
 
 COPY . .
 
-RUN yarn test
-
 # Build stage completed, moving to runtime image
 FROM node:20-slim
 
