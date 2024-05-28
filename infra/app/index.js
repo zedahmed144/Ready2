@@ -1,3 +1,4 @@
+require('newrelic');  // This should be the first line
 const express = require('express');
 
 const app = express();
