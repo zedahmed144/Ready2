@@ -9,4 +9,4 @@ namespace: qa-namespace
 images:
 - name: ready-api
   newName: zedahmed144/ready-api
-  newTag: qa
+  newTag: 81e11d5079f38034cae9d0712a65e5bc6c484077
