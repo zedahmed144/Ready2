@@ -9,4 +9,4 @@ namespace: prd-namespace
 images:
 - name: ready-api
   newName: zedahmed144/ready-api
-  newTag: 59bb718210a3275ff4f6f8226c9f381a5b5c20e8
+  newTag: 7b70abf7060197eb5d45e008f896a7f0642896a8
