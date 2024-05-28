@@ -9,4 +9,4 @@ namespace: dev-namespace
 images:
 - name: ready-api
   newName: zedahmed144/ready-api
-  newTag: 8e6445c09771fdb450969fbc316d8c60427c5b21
+  newTag: 9745d23f1f4e0cff22525ecaa72cc7c6d72444b3
