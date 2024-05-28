@@ -17,4 +17,5 @@ COPY --from=builder /usr/src/app .
 
 EXPOSE 80
 
-CMD ["node", "index.js"]
+CMD ["node", "-r", "newrelic", "index.js"]
+
