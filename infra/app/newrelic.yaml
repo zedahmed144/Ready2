@@ -346,7 +346,7 @@ data:
     # This is the configuration file for the infrastructure agent. See:
     # https://docs.newrelic.com/docs/infrastructure/install-infrastructure-agent/configuration/infrastructure-agent-configuration-settings/
     custom_attributes:
-      clusterName: Swish2
+      clusterName: Kubernetes-Swish
     http_server_enabled: true
     http_server_port: 8001
     is_forward_only: true
@@ -421,8 +421,8 @@ spec:
     metadata:
       annotations:
         checksum/nri-kubernetes: cd37e5db929c0ba47cc8902dc6c6d43bdc4646f827691c256654b5bfec8fec55
-        checksum/agent-config: ad2b4bff46212177fefb20836959ae5367ebfdcb1f31890ff8edf1e2ef4c52aa
-        checksum/license-secret: 46e47a316d0d18510771c429360d8b4792b8891d989d9f50b6b7d556fb661c89
+        checksum/agent-config: 68eee5e226dc5d79d632c5047487a9bb1fcb201fca25cee239b2d3b8d353a880
+        checksum/license-secret: 2af1689a87ad4c13997ed0d9a9671935062348129ab6e7303025164c73ba03ac
       labels:
         app.kubernetes.io/instance: nri-bundle
         app.kubernetes.io/name: newrelic-infrastructure
@@ -445,7 +445,7 @@ spec:
             - name: "NRI_KUBERNETES_SINK_HTTP_PORT"
               value: "8001"
             - name: "NRI_KUBERNETES_CLUSTERNAME"
-              value: Swish2
+              value: Kubernetes-Swish
             - name: "NRI_KUBERNETES_VERBOSE"
               value: "false"
 
@@ -752,7 +752,7 @@ data:
     # This is the configuration file for the infrastructure agent. See:
     # https://docs.newrelic.com/docs/infrastructure/install-infrastructure-agent/configuration/infrastructure-agent-configuration-settings/
     custom_attributes:
-      clusterName: Swish2
+      clusterName: Kubernetes-Swish
     http_server_enabled: true
     http_server_port: 8002
     is_forward_only: true
@@ -781,8 +781,8 @@ spec:
     metadata:
       annotations:
         checksum/nri-kubernetes: 9ff9dc0d009a3b589e1ade847b2cd9e0d7090615e66b748c224ddb4347f708b4
-        checksum/agent-config: 0c9e636d0c9506244163fef80e47cb4d9967d85f071ecde26ff02b6ace39a7fa
-        checksum/license-secret: 46e47a316d0d18510771c429360d8b4792b8891d989d9f50b6b7d556fb661c89
+        checksum/agent-config: 880a6b950b1515ca6393a55bca6bd4a327349206560e9aa7d6fc8eaca47d5919
+        checksum/license-secret: 2af1689a87ad4c13997ed0d9a9671935062348129ab6e7303025164c73ba03ac
       labels:
         app.kubernetes.io/instance: nri-bundle
         app.kubernetes.io/name: newrelic-infrastructure
@@ -804,7 +804,7 @@ spec:
             - name: "NRI_KUBERNETES_SINK_HTTP_PORT"
               value: "8002"
             - name: "NRI_KUBERNETES_CLUSTERNAME"
-              value: Swish2
+              value: Kubernetes-Swish
             - name: "NRI_KUBERNETES_VERBOSE"
               value: "false"
 
@@ -938,7 +938,7 @@ data:
     # This is the configuration file for the infrastructure agent. See:
     # https://docs.newrelic.com/docs/infrastructure/install-infrastructure-agent/configuration/infrastructure-agent-configuration-settings/
     custom_attributes:
-      clusterName: Swish2
+      clusterName: Kubernetes-Swish
     features:
       docker_enabled: false
     http_server_enabled: true
@@ -970,8 +970,8 @@ spec:
     metadata:
       annotations:
         checksum/nri-kubernetes: 8b5dfd785c918812766fd7f9a373d3169ac4f359ed5978b59e23c5be2908bba9
-        checksum/agent-config: defe262d5be557b9e18dd6d41f3cf368431bc6617bfaa032ff733b23b9f8bf64
-        checksum/license-secret: 46e47a316d0d18510771c429360d8b4792b8891d989d9f50b6b7d556fb661c89
+        checksum/agent-config: 28bdaff97802c7a456b394ac41fd8572293ff2e21ece892255a0c6976d72d29e
+        checksum/license-secret: 2af1689a87ad4c13997ed0d9a9671935062348129ab6e7303025164c73ba03ac
         checksum/integrations_config: f1182c9248537986a6cc28bbd093ad07df42b3cba72767112d7c99102847babd
       labels:
         app.kubernetes.io/instance: nri-bundle
@@ -994,7 +994,7 @@ spec:
             - name: "NRI_KUBERNETES_SINK_HTTP_PORT"
               value: "8003"
             - name: "NRI_KUBERNETES_CLUSTERNAME"
-              value: Swish2
+              value: Kubernetes-Swish
             - name: "NRI_KUBERNETES_VERBOSE"
               value: "false"
 
@@ -1056,7 +1056,7 @@ spec:
                   apiVersion: "v1"
                   fieldPath: "spec.nodeName"
             - name: "CLUSTER_NAME"
-              value: Swish2
+              value: Kubernetes-Swish
             - name: "NRIA_PASSTHROUGH_ENVIRONMENT"
               value: "CLUSTER_NAME"
             - name: "NRIA_HOST"
@@ -1206,7 +1206,7 @@ metadata:
     app.kubernetes.io/version: 3.28.7
     helm.sh/chart: newrelic-infrastructure-3.33.7
 data:
-  licenseKey: NjdlYTFhYzgwMDg1YzE5ZWY0OGYxNTZkZjFhZmQzZGNGRkZGTlJBTA==
+  licenseKey: Zjc4NzlkMjYyZWVlOWU3OWQwYTgzZTkwZmYxZjliMjdGRkZGTlJBTA==
 ---
 # Source: nri-bundle/charts/newrelic-infrastructure/templates/serviceaccount.yaml
 apiVersion: v1
@@ -1380,7 +1380,7 @@ spec:
                   name: nri-bundle-newrelic-logging-config
                   key: license
             - name: CLUSTER_NAME
-              value: Swish2
+              value: Kubernetes-Swish
             - name: LOG_LEVEL
               value: "info"
             - name: LOG_PARSER
@@ -1456,7 +1456,7 @@ metadata:
   name: nri-bundle-newrelic-logging-config
 type: Opaque
 data:
-  license: NjdlYTFhYzgwMDg1YzE5ZWY0OGYxNTZkZjFhZmQzZGNGRkZGTlJBTA==
+  license: Zjc4NzlkMjYyZWVlOWU3OWQwYTgzZTkwZmYxZjliMjdGRkZGTlJBTA==
 ---
 # Source: nri-bundle/charts/newrelic-logging/templates/serviceaccount.yaml
 apiVersion: v1
@@ -1468,6 +1468,270 @@ metadata:
     release: "nri-bundle"
   name: nri-bundle-newrelic-logging
   namespace: newrelic
+---
+# Source: nri-bundle/charts/newrelic-prometheus-agent/templates/clusterrole.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: nri-bundle-newrelic-prometheus-agent
+  labels:
+    app.kubernetes.io/instance: nri-bundle
+    app.kubernetes.io/name: newrelic-prometheus-agent
+    app.kubernetes.io/version: v2.37.8
+    helm.sh/chart: newrelic-prometheus-agent-1.13.1
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - endpoints
+      - services
+      - pods
+      - services
+    verbs:
+      - get
+      - list
+      - watch
+  - nonResourceURLs:
+      - "/metrics"
+    verbs:
+      - get
+---
+# Source: nri-bundle/charts/newrelic-prometheus-agent/templates/clusterrolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: nri-bundle-newrelic-prometheus-agent
+  labels:
+    app.kubernetes.io/instance: nri-bundle
+    app.kubernetes.io/name: newrelic-prometheus-agent
+    app.kubernetes.io/version: v2.37.8
+    helm.sh/chart: newrelic-prometheus-agent-1.13.1
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: nri-bundle-newrelic-prometheus-agent
+subjects:
+- kind: ServiceAccount
+  name: nri-bundle-newrelic-prometheus-agent
+  namespace: newrelic
+---
+# Source: nri-bundle/charts/newrelic-prometheus-agent/templates/configmap.yaml
+kind: ConfigMap
+metadata:
+  name: nri-bundle-newrelic-prometheus-agent
+  namespace: newrelic
+  labels:
+    app.kubernetes.io/instance: nri-bundle
+    app.kubernetes.io/name: newrelic-prometheus-agent
+    app.kubernetes.io/version: v2.37.8
+    helm.sh/chart: newrelic-prometheus-agent-1.13.1
+apiVersion: v1
+data:
+  config.yaml: |-
+    # Configuration for newrelic-prometheus-configurator
+    newrelic_remote_write:
+      extra_write_relabel_configs:
+      - action: drop
+        regex: kube_.+|container_.+|machine_.+|cadvisor_.+
+        source_labels:
+        - __name__
+      - action: replace
+        regex: timeseries_write_(.*)
+        replacement: counter
+        separator: ;
+        source_labels:
+        - __name__
+        target_label: newrelic_metric_type
+      - action: replace
+        regex: sql_byte(.*)
+        replacement: counter
+        separator: ;
+        source_labels:
+        - __name__
+        target_label: newrelic_metric_type
+    static_targets:
+      jobs:
+      - extra_metric_relabel_config:
+        - action: keep
+          regex: prometheus_agent_active_series|prometheus_target_interval_length_seconds|prometheus_target_scrape_pool_targets|prometheus_remote_storage_samples_pending|prometheus_remote_storage_samples_in_total|prometheus_remote_storage_samples_retried_total|prometheus_agent_corruptions_total|prometheus_remote_storage_shards|prometheus_sd_kubernetes_events_total|prometheus_agent_checkpoint_creations_failed_total|prometheus_agent_checkpoint_deletions_failed_total|prometheus_remote_storage_samples_dropped_total|prometheus_remote_storage_samples_failed_total|prometheus_sd_kubernetes_http_request_total|prometheus_agent_truncate_duration_seconds_sum|prometheus_build_info|process_resident_memory_bytes|process_virtual_memory_bytes|process_cpu_seconds_total|prometheus_remote_storage_bytes_total
+          source_labels:
+          - __name__
+        job_name: self-metrics
+        skip_sharding: true
+        targets:
+        - localhost:9090
+    common:
+      external_labels:
+        cluster_name: Kubernetes-Swish
+      scrape_interval: 30s
+    kubernetes:
+      jobs:
+      - job_name_prefix: default
+        target_discovery:
+          endpoints: true
+          filter:
+            annotations:
+              prometheus.io/scrape: true
+          pod: true
+      - integrations_filter:
+          enabled: false
+        job_name_prefix: newrelic
+        target_discovery:
+          endpoints: true
+          filter:
+            annotations:
+              newrelic.io/scrape: true
+          pod: true
+      integrations_filter:
+        app_values:
+        - redis
+        - traefik
+        - calico
+        - nginx
+        - coredns
+        - kube-dns
+        - etcd
+        - cockroachdb
+        - velero
+        - harbor
+        - argocd
+        enabled: false
+        source_labels:
+        - app.kubernetes.io/name
+        - app.newrelic.io/name
+        - k8s-app
+---
+# Source: nri-bundle/charts/newrelic-prometheus-agent/templates/secret.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: nri-bundle-newrelic-prometheus-agent-license
+  namespace: newrelic
+  labels:
+    app.kubernetes.io/instance: nri-bundle
+    app.kubernetes.io/name: newrelic-prometheus-agent
+    app.kubernetes.io/version: v2.37.8
+    helm.sh/chart: newrelic-prometheus-agent-1.13.1
+data:
+  licenseKey: Zjc4NzlkMjYyZWVlOWU3OWQwYTgzZTkwZmYxZjliMjdGRkZGTlJBTA==
+---
+# Source: nri-bundle/charts/newrelic-prometheus-agent/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    app.kubernetes.io/instance: nri-bundle
+    app.kubernetes.io/name: newrelic-prometheus-agent
+    app.kubernetes.io/version: v2.37.8
+    helm.sh/chart: newrelic-prometheus-agent-1.13.1
+  name: nri-bundle-newrelic-prometheus-agent
+  namespace: newrelic
+---
+# Source: nri-bundle/charts/newrelic-prometheus-agent/templates/statefulset.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app.kubernetes.io/instance: nri-bundle
+    app.kubernetes.io/name: newrelic-prometheus-agent
+    app.kubernetes.io/version: v2.37.8
+    helm.sh/chart: newrelic-prometheus-agent-1.13.1
+  name: nri-bundle-newrelic-prometheus-agent
+  namespace: newrelic
+spec:
+  serviceName: nri-bundle-newrelic-prometheus-agent-headless
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: nri-bundle
+      app.kubernetes.io/name: newrelic-prometheus-agent
+  replicas: 1
+  template:
+    metadata:
+      annotations:
+        checksum/config: 4843edd28f2c2cbbbf95385bc4519251e60e37656bc9d00480340c98629ac5b7
+      labels:
+        app.kubernetes.io/instance: nri-bundle
+        app.kubernetes.io/name: newrelic-prometheus-agent
+    spec:
+
+      hostNetwork: false
+
+      serviceAccountName: nri-bundle-newrelic-prometheus-agent
+
+      initContainers:
+        - name: configurator
+          image: "newrelic/newrelic-prometheus-configurator:1.16.1"
+          imagePullPolicy: IfNotPresent
+          args:
+            - --input=/etc/configurator/config.yaml
+            - --output=/etc/prometheus/config/config.yaml
+          volumeMounts:
+            - name: configurator-config
+              mountPath: /etc/configurator/
+            - name: prometheus-config
+              mountPath: /etc/prometheus/config
+          env:
+            - name: NR_PROM_DATA_SOURCE_NAME
+              valueFrom: 
+                fieldRef: 
+                  fieldPath: metadata.name
+            - name: NR_PROM_LICENSE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: nri-bundle-newrelic-prometheus-agent-license
+                  key: licenseKey
+            - name: NR_PROM_CHART_VERSION
+              value: 1.13.1
+
+      containers:
+        - name: prometheus
+          image: "quay.io/prometheus/prometheus:v2.37.8"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 9090
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /-/healthy
+              port: 9090
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 15
+            timeoutSeconds: 10
+            failureThreshold: 3
+            successThreshold: 1
+          readinessProbe:
+            httpGet:
+              path: /-/ready
+              port: 9090
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 4
+            failureThreshold: 3
+            successThreshold: 1
+          args:
+            - --config.file=/etc/prometheus/config/config.yaml
+            - --enable-feature=agent,expand-external-labels
+            - --storage.agent.retention.max-time=30m
+            - --storage.agent.wal-truncate-frequency=30m
+            - --storage.agent.path=/etc/prometheus/storage
+          volumeMounts:
+            - name: prometheus-config
+              mountPath: /etc/prometheus/config
+            - name: prometheus-storage
+              mountPath: /etc/prometheus/storage
+
+      volumes:
+        - name: configurator-config
+          configMap:
+            name: nri-bundle-newrelic-prometheus-agent
+        - name: prometheus-config
+          emptyDir: {}
+        - name: prometheus-storage
+          emptyDir: {}
+      nodeSelector:
+        kubernetes.io/os: linux
 ---
 # Source: nri-bundle/charts/nri-kube-events/templates/agent-configmap.yaml
 apiVersion: v1
@@ -1567,7 +1831,7 @@ data:
       - name: newRelicInfra
         config:
           agentEndpoint: http://localhost:8001/v1/data
-          clusterName: Swish2
+          clusterName: Kubernetes-Swish
           agentHTTPTimeout: 30s
     captureDescribe: true
     describeRefresh: 24h
@@ -1677,7 +1941,7 @@ metadata:
     app.kubernetes.io/version: 2.9.7
     helm.sh/chart: nri-kube-events-3.9.7
 data:
-  licenseKey: NjdlYTFhYzgwMDg1YzE5ZWY0OGYxNTZkZjFhZmQzZGNGRkZGTlJBTA==
+  licenseKey: Zjc4NzlkMjYyZWVlOWU3OWQwYTgzZTkwZmYxZjliMjdGRkZGTlJBTA==
 ---
 # Source: nri-bundle/charts/nri-kube-events/templates/serviceaccount.yaml
 apiVersion: v1
@@ -1955,7 +2219,7 @@ spec:
         imagePullPolicy: IfNotPresent
         env:
         - name: clusterName
-          value: Swish2
+          value: Kubernetes-Swish
         ports:
           - containerPort: 8443
             protocol: TCP
