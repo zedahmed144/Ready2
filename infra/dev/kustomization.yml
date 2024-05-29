@@ -7,6 +7,6 @@ resources:
 - hpa.yml
 namespace: dev-namespace
 images:
-- name: ready-api
+- name: ready-api-dev
   newName: zedahmed144/ready-api
   newTag: dev
