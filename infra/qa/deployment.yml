@@ -17,6 +17,7 @@ spec:
       containers:
         - image: ready-api
           name: ready-api-qa
+          env:
           - name: NEW_RELIC_LICENSE_KEY
             value: "20514c5485642548162a0416630425feFFFFNRAL"  # Replace with your actual license key
           - name: NEW_RELIC_APP_NAME
