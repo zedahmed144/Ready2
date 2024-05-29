@@ -7,6 +7,6 @@ resources:
 - hpa.yml
 namespace: qa-namespace
 images:
-- name: ready-api
+- name: ready-api-qa
   newName: zedahmed144/ready-api
   newTag: 0e641a91a97933139d005df71a5a2483cffe9ed0

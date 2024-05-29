@@ -16,10 +16,10 @@ spec:
     spec:
       containers:
         - image: ready-api
-          name: ready-api
+          name: ready-api-dev
           env:
           - name: NEW_RELIC_LICENSE_KEY
-            value: "NRAK-JVFC3EPUK6180P6UIB7S5M7GQ0U"  # Replace with your actual license key
+            value: "20514c5485642548162a0416630425feFFFFNRAL"  # Replace with your actual license key
           - name: NEW_RELIC_APP_NAME
             value: "Dev-NR"  # Descriptive name for your application
           - name: NEW_RELIC_ENABLED
