@@ -19,9 +19,9 @@ spec:
           name: ready-api-dev
           env:
           - name: NEW_RELIC_LICENSE_KEY
-            value: "20514c5485642548162a0416630425feFFFFNRAL"  # Replace with your actual license key
+            value: "51d85c103db9aef88cfc365f5ed5f650FFFFNRAL"  # Replace with your actual license key
           - name: NEW_RELIC_APP_NAME
-            value: "Dev-NR"  # Descriptive name for your application
+            value: "Dev-NR-different key"  # Descriptive name for your application
           - name: NEW_RELIC_ENABLED
             value: "true"  # Enable the agent; set to "false" if you need to disable it temporarily
           - name: NEW_RELIC_NO_CONFIG_FILE
